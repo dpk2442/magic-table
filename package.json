@@ -1,0 +1,43 @@
+{
+    "name": "magic-table",
+    "version": "0.0.0",
+    "description": "Adds magic to your table",
+    "type": "module",
+    "main": "dist/index.js",
+    "scripts": {
+        "build": "tsc",
+        "start": "tsc && concurrently --kill-others --raw \"tsc --watch --preserveWatchOutput\" \"web-dev-server\"",
+        "lint": "eslint --ext .ts,.html . --ignore-path .gitignore && prettier \"**/*.ts\" --check --ignore-path .gitignore",
+        "format": "eslint --ext .ts,.html . --fix --ignore-path .gitignore && prettier \"**/*.ts\" --write --ignore-path .gitignore"
+    },
+    "author": "dpk2442@gmail.com",
+    "license": "MIT",
+    "devDependencies": {
+        "@open-wc/eslint-config": "^12.0.3",
+        "@typescript-eslint/eslint-plugin": "^8.23.0",
+        "@web/dev-server": "^0.4.6",
+        "concurrently": "^9.1.2",
+        "eslint": "^8.57.1",
+        "eslint-config-prettier": "^10.0.1",
+        "prettier": "^3.4.2",
+        "typescript": "^5.7.3"
+    },
+    "eslintConfig": {
+        "parser": "@typescript-eslint/parser",
+        "extends": [
+            "@open-wc",
+            "prettier"
+        ],
+        "plugins": [
+            "@typescript-eslint"
+        ],
+        "rules": {
+            "import/no-unresolved": "off"
+        }
+    },
+    "prettier": {
+        "singleQuote": true,
+        "arrowParens": "avoid",
+        "tabWidth": 4
+    }
+}
