@@ -33,22 +33,24 @@ export default class MagicTable extends HTMLElement {
             );
         }
 
-        // Use position sticky if there is no horizontal overflow
-        if (this.clientWidth >= this.scrollWidth) {
+        // Make table header sticky
+        thead.style.position = 'sticky';
+        thead.style.top = '0';
+
+        // Use position sticky if there is no overflow
+        if (
+            this.clientWidth >= this.scrollWidth &&
+            this.clientHeight >= this.scrollHeight
+        ) {
             this.style.overflowY = '';
-            thead.style.position = 'sticky';
-            thead.style.top = '0';
             return;
         }
 
         // Set up scroll handler based sticky header
         const theadHeight = thead.getBoundingClientRect().height;
-        thead.style.position = 'relative';
-        thead.style.top = '0';
-
         const scrollHandler = () => {
             window.requestAnimationFrame(() => {
-                const boundingClientRect = table.getBoundingClientRect();
+                const boundingClientRect = this.getBoundingClientRect();
                 if (boundingClientRect.top > 0) {
                     thead.style.top = '0';
                 } else {

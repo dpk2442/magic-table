@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Height Constrained Long Table</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Height Constrained Long Table</h1>
+    <magic-table style="max-height: 500px; overflow-x: auto" sticky-header>
+        <table data-generate-table="50,5"></table>
+    </magic-table>
+    <div class="scroll-padding"></div>
+    <script type="module">
+        import './table_generator.js';
+        import '../dist/magic-table.js';
+    </script>
+</body>
+</html>
