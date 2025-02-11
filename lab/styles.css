@@ -28,3 +28,7 @@ table thead {
     position: sticky;
     top: 0;
 }
+
+.scroll-padding {
+    height: 100vh;
+}
