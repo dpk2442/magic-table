@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dynamic Size Table</title>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        magic-table {
+            max-width: 800px;
+        }
+
+        magic-table.overflow {
+            overflow-y: auto;
+            border: 1px solid black;
+        }
+
+        magic-table.small {
+            max-width: 400px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dynamic Size Table</h1>
+    <div>
+        <p>
+            <label><input type="checkbox" id="overflow">Hide Overflow</label>
+            <label><input type="checkbox" id="small">Small Wrapper</label>
+        </p>
+        <p>
+            <label><input type="checkbox" data-target="c1" checked>Column 1</label>
+            <label><input type="checkbox" data-target="c2" checked>Column 2</label>
+            <label><input type="checkbox" data-target="c3" checked>Column 3</label>
+            <label><input type="checkbox" data-target="c4" checked>Column 4</label>
+            <label><input type="checkbox" data-target="c5" checked>Column 5</label>
+        </p>
+        <p>
+            <button id="add-row">Add Row</button>
+            <button id="remove-row">Remove Row</button>
+        </p>
+        <p>
+            <button id="add-column">Add Column</button>
+            <button id="remove-column">Remove Column</button>
+        </p>
+    </div>
+    <magic-table sticky-header>
+        <table id="table">
+            <colgroup>
+                <col id="c1">
+                <col id="c2">
+                <col id="c3">
+                <col id="c4">
+                <col id="c5">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>Column 1</th>
+                    <th>Column 2</th>
+                    <th>Column 3</th>
+                    <th>Column 4</th>
+                    <th>Column 5</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Row 1</td>
+                    <td>cell</td>
+                    <td>cell</td>
+                    <td>cell</td>
+                    <td>cell</td>
+                </tr>
+                <tr>
+                    <td>Row 2</td>
+                    <td>cell</td>
+                    <td>cell</td>
+                    <td>cell</td>
+                    <td>cell</td>
+                </tr>
+                <tr>
+                    <td>Row 3</td>
+                    <td>cell</td>
+                    <td>cell</td>
+                    <td>cell</td>
+                    <td>cell</td>
+                </tr>
+                <tr>
+                    <td>Row 4</td>
+                    <td>cell</td>
+                    <td>cell</td>
+                    <td>cell</td>
+                    <td>cell</td>
+                </tr>
+                <tr>
+                    <td>Row 5</td>
+                    <td>cell</td>
+                    <td>cell</td>
+                    <td>cell</td>
+                    <td>cell</td>
+                </tr>
+            </tbody>
+        </table>
+    </magic-table>
+    <div class="scroll-padding"></div>
+    <script type="module">
+        import '../../dist/magic-table.js';
+
+        const magicTable = document.querySelector('magic-table');
+
+        document.getElementById('overflow').addEventListener('change', event => {
+            magicTable.classList.toggle('overflow', event.target.checked);
+        });
+
+        document.getElementById('small').addEventListener('change', event => {
+            magicTable.classList.toggle('small', event.target.checked);
+        });
+
+        document.querySelectorAll('input[type="checkbox"][data-target]').forEach(checkbox => {
+            checkbox.addEventListener('change', event => {
+                const col = document.getElementById(checkbox.dataset.target);
+                col.style.visibility = event.target.checked ? '' : 'collapse';
+            });
+        });
+
+        const table = document.getElementById('table');
+        const headerRow = table.querySelector('thead tr');
+        const tbody = table.querySelector('tbody');
+        const initialCols = headerRow.cells.length;
+        const initialRows = tbody.children.length;
+
+        document.getElementById('add-row').addEventListener('click', () => {
+            const row = document.createElement('tr');
+            row.innerHTML = `<td>Row ${tbody.childElementCount + 1}</td>`;
+            row.innerHTML += '<td>cell</td>'.repeat(headerRow.cells.length - 1);
+            tbody.appendChild(row);
+        });
+
+        document.getElementById('remove-row').addEventListener('click', () => {
+            if (tbody.children.length <= initialRows) {
+                return;
+            }
+
+            tbody.removeChild(tbody.lastElementChild);
+        });
+
+        document.getElementById('add-column').addEventListener('click', () => {
+            let cell = document.createElement('th');
+            cell.textContent = `Column ${headerRow.cells.length + 1}`;
+            headerRow.appendChild(cell);
+
+            tbody.querySelectorAll('tr').forEach(row => {
+                cell = document.createElement('td');
+                cell.textContent = 'cell';
+                row.appendChild(cell);
+            });
+        });
+
+        document.getElementById('remove-column').addEventListener('click', () => {
+            if (headerRow.cells.length <= initialCols) {
+                return;
+            }
+
+            headerRow.removeChild(headerRow.lastElementChild);
+            tbody.querySelectorAll('tr').forEach(row => {
+                row.removeChild(row.lastElementChild);
+            });
+        });
+    </script>
+</body>
+</html>
