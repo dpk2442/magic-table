@@ -35,6 +35,11 @@ export default class MagicTable extends HTMLElement {
         thead.style.position = 'sticky';
         thead.style.top = '0';
 
+        // Compute initial thead offset
+        const initialTheadTop = thead.getBoundingClientRect().top;
+        const initialMagicTableTop = this.getBoundingClientRect().top;
+        const initialOffset = initialTheadTop - initialMagicTableTop;
+
         // Set up scroll handler based sticky header
         const scrollHandler = () => {
             window.requestAnimationFrame(() => {
@@ -47,8 +52,13 @@ export default class MagicTable extends HTMLElement {
 
                 const magicTableRect = this.getBoundingClientRect();
 
+                // If the bottom of the magic table is close enough that the thead is only partially visible, no need to adjust
+                if (magicTableRect.bottom <= theadRect.height) {
+                    return;
+                }
+
                 // If the top of the magic table is visible, setting top to 0 will position the thead correctly
-                if (magicTableRect.top >= 0) {
+                if (magicTableRect.top + initialOffset >= 0) {
                     thead.style.top = '0';
                     return;
                 }
@@ -74,7 +84,6 @@ export default class MagicTable extends HTMLElement {
                         window.addEventListener('scroll', scrollHandler);
                     } else {
                         window.removeEventListener('scroll', scrollHandler);
-                        thead.style.top = '0';
                     }
                 });
             },
