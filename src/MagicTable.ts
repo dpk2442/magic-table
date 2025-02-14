@@ -24,8 +24,6 @@ export default class MagicTable extends HTMLElement {
     }
 
     private setupStickyHeader(table: HTMLTableElement) {
-        this.style.overflowY = 'auto';
-
         const thead = table.querySelector('thead');
         if (!thead) {
             throw new Error(
@@ -37,29 +35,30 @@ export default class MagicTable extends HTMLElement {
         thead.style.position = 'sticky';
         thead.style.top = '0';
 
-        // Use position sticky if there is no overflow
-        if (
-            this.clientWidth >= this.scrollWidth &&
-            this.clientHeight >= this.scrollHeight
-        ) {
-            this.style.overflowY = '';
-            return;
-        }
-
         // Set up scroll handler based sticky header
-        const theadHeight = thead.getBoundingClientRect().height;
         const scrollHandler = () => {
             window.requestAnimationFrame(() => {
-                const boundingClientRect = this.getBoundingClientRect();
-                if (boundingClientRect.top > 0) {
+                const theadRect = thead.getBoundingClientRect();
+
+                // If thead is at the top of the viewport, no need to adjust
+                if (theadRect.top === 0) {
+                    return;
+                }
+
+                const magicTableRect = this.getBoundingClientRect();
+
+                // If the top of the magic table is visible, setting top to 0 will position the thead correctly
+                if (magicTableRect.top >= 0) {
                     thead.style.top = '0';
+                    return;
+                }
+
+                // The top of the magic table is off the top of the screen, adjust the thead offset accordingly
+                const offset = -magicTableRect.top;
+                if (offset + theadRect.height > magicTableRect.height) {
+                    thead.style.top = `${magicTableRect.height - theadRect.height}px`;
                 } else {
-                    const offset = -boundingClientRect.top;
-                    if (offset + theadHeight > boundingClientRect.height) {
-                        thead.style.top = `${boundingClientRect.height - theadHeight}px`;
-                    } else {
-                        thead.style.top = `${offset}px`;
-                    }
+                    thead.style.top = `${offset}px`;
                 }
             });
         };
