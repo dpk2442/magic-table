@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Long Table</title>
+    <title>Wide Table</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
-    <h1>Long Table</h1>
-    <magic-table sticky-header>
-        <table data-generate-table="50,5"></table>
+    <h1>Wide Table</h1>
+    <magic-table style="max-width: 500px" sticky-header>
+        <table data-generate-table="10,50"></table>
     </magic-table>
     <div class="scroll-padding"></div>
     <script type="module">
         import '../table_generator.js';
-        import '../../dist/magic-table.js';
+        import '../../src/magic-table.ts';
     </script>
 </body>
 </html>

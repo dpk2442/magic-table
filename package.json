@@ -5,8 +5,8 @@
     "type": "module",
     "main": "dist/index.js",
     "scripts": {
-        "build": "tsc",
-        "start": "tsc && concurrently --kill-others --raw \"tsc --watch --preserveWatchOutput\" \"web-dev-server\"",
+        "dev": "vite",
+        "build": "tsc && tsx ./buildBundles.ts",
         "lint": "eslint --ext .ts,.html . --ignore-path .gitignore && prettier \"**/*.ts\" --check --ignore-path .gitignore",
         "format": "eslint --ext .ts,.html . --fix --ignore-path .gitignore && prettier \"**/*.ts\" --write --ignore-path .gitignore"
     },
@@ -15,12 +15,12 @@
     "devDependencies": {
         "@open-wc/eslint-config": "^12.0.3",
         "@typescript-eslint/eslint-plugin": "^8.23.0",
-        "@web/dev-server": "^0.4.6",
-        "concurrently": "^9.1.2",
         "eslint": "^8.57.1",
         "eslint-config-prettier": "^10.0.1",
         "prettier": "^3.4.2",
-        "typescript": "^5.7.3"
+        "tsx": "^4.19.3",
+        "typescript": "^5.7.3",
+        "vite": "^6.1.0"
     },
     "eslintConfig": {
         "parser": "@typescript-eslint/parser",
@@ -30,10 +30,7 @@
         ],
         "plugins": [
             "@typescript-eslint"
-        ],
-        "rules": {
-            "import/no-unresolved": "off"
-        }
+        ]
     },
     "prettier": {
         "singleQuote": true,

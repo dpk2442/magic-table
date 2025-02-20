@@ -1,25 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Fully Constrained Table</title>
+    <title>Full Page Table</title>
     <link rel="stylesheet" href="../styles.css">
-    <style>
-        magic-table {
-            max-width: 500px;
-            max-height: 500px;
-            overflow: auto;
-        }
-    </style>
 </head>
 <body>
-    <h1>Fully Constrained Table</h1>
+    <h1>Full Page Table</h1>
     <magic-table sticky-header>
         <table data-generate-table="100,100"></table>
     </magic-table>
     <div class="scroll-padding"></div>
     <script type="module">
         import '../table_generator.js';
-        import '../../dist/magic-table.js';
+        import '../../src/magic-table.ts';
     </script>
 </body>
 </html>

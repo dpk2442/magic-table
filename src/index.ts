@@ -1,3 +1,3 @@
-import MagicTable from './MagicTable.js';
+import MagicTable from './lib/MagicTable.ts';
 
-export { MagicTable };
+export default { MagicTable };
