@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Width Constrained Long Table</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <h1>Width Constrained Long Table</h1>
+    <magic-table style="max-width: 500px; overflow-y: auto" sticky-header>
+        <table data-generate-table="50,50"></table>
+    </magic-table>
+    <div class="scroll-padding"></div>
+    <script type="module">
+        import '../table_generator.js';
+        import '../../src/magic-table.ts';
+    </script>
+</body>
+</html>

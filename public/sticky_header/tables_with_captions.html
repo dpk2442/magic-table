@@ -15,12 +15,12 @@
 </head>
 <body>
     <h1>Long Table</h1>
-    <magic-table sticky-header>
+    <magic-table id="unconstrained" sticky-header>
         <table data-generate-table="10,10">
             <caption>10x10 Table</caption>
         </table>
     </magic-table>
-    <magic-table style="max-width: 500px; overflow-y: auto;" sticky-header>
+    <magic-table id="constrained" style="max-width: 500px; overflow-y: auto;" sticky-header>
         <table data-generate-table="10,50">
             <caption>10x50 Table</caption>
         </table>

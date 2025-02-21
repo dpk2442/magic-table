@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { glob } from 'fs/promises';
 import { basename } from 'path';
 import { build } from 'vite';
@@ -17,20 +16,18 @@ await build({
 });
 
 for await (const bundle of glob('src/*.ts')) {
-    if (bundle === 'src/index.ts') {
-        continue;
-    }
-
-    await build({
-        build: {
-            lib: {
-                entry: bundle,
-                formats: ['es'],
-                fileName: basename(bundle, '.ts'),
+    if (bundle !== 'src/index.ts') {
+        await build({
+            build: {
+                lib: {
+                    entry: bundle,
+                    formats: ['es'],
+                    fileName: basename(bundle, '.ts'),
+                },
+                copyPublicDir: false,
+                emptyOutDir: false,
             },
-            copyPublicDir: false,
-            emptyOutDir: false,
-        },
-        clearScreen: false,
-    });
+            clearScreen: false,
+        });
+    }
 }

@@ -8,19 +8,23 @@
         "dev": "vite",
         "build": "tsc && tsx ./buildBundles.ts",
         "lint": "eslint --ext .ts,.html . --ignore-path .gitignore && prettier \"**/*.ts\" --check --ignore-path .gitignore",
-        "format": "eslint --ext .ts,.html . --fix --ignore-path .gitignore && prettier \"**/*.ts\" --write --ignore-path .gitignore"
+        "format": "eslint --ext .ts,.html . --fix --ignore-path .gitignore && prettier \"**/*.ts\" --write --ignore-path .gitignore",
+        "test": "playwright test",
+        "test:report": "playwright show-report --host 0.0.0.0"
     },
     "author": "dpk2442@gmail.com",
     "license": "MIT",
     "devDependencies": {
         "@open-wc/eslint-config": "^12.0.3",
-        "@typescript-eslint/eslint-plugin": "^8.23.0",
+        "@playwright/test": "^1.50.1",
+        "@types/node": "^22.13.5",
+        "@typescript-eslint/eslint-plugin": "^8.24.1",
         "eslint": "^8.57.1",
         "eslint-config-prettier": "^10.0.1",
-        "prettier": "^3.4.2",
+        "prettier": "^3.5.2",
         "tsx": "^4.19.3",
         "typescript": "^5.7.3",
-        "vite": "^6.1.0"
+        "vite": "^6.1.1"
     },
     "eslintConfig": {
         "parser": "@typescript-eslint/parser",
@@ -30,7 +34,18 @@
         ],
         "plugins": [
             "@typescript-eslint"
-        ]
+        ],
+        "rules": {
+            "import/no-extraneous-dependencies": [
+                "error",
+                {
+                    "devDependencies": [
+                        "/*.ts",
+                        "**/*.spec.ts"
+                    ]
+                }
+            ]
+        }
     },
     "prettier": {
         "singleQuote": true,
