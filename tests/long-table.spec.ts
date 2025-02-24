@@ -1,5 +1,14 @@
 import { test, expect } from '@playwright/test';
 
+test('adds classes when activated', async ({ page }) => {
+    await page.goto('/sticky_header/long_table.html');
+
+    const magicTable = page.locator('magic-table');
+    await magicTable.waitFor({ state: 'attached' });
+    expect(magicTable).toHaveClass(/mt-activated/);
+    expect(page.locator('thead')).toHaveClass(/mt-sticky-header/);
+});
+
 test('header stays at page top when scrolling', async ({ page }) => {
     await page.goto('/sticky_header/long_table.html');
     const table = page.locator('table');

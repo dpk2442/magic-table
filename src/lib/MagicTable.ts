@@ -18,6 +18,10 @@ export default class MagicTable extends HTMLElement {
             throw new Error('MagicTable does not contain a table!');
         }
 
+        // This class lets the consumer know the element is activated and has a scoped name, so ignore the linting rule
+        // eslint-disable-next-line wc/no-self-class
+        this.classList.add('mt-activated');
+
         if (this.hasAttribute('sticky-header')) {
             this.setupStickyHeader(table);
         }
@@ -31,7 +35,8 @@ export default class MagicTable extends HTMLElement {
             );
         }
 
-        // Make table header sticky
+        // Add class to table header and make it sticky
+        thead.classList.add('mt-sticky-header');
         thead.style.position = 'sticky';
         thead.style.top = '0';
 
