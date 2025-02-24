@@ -5,8 +5,8 @@ test('adds classes when activated', async ({ page }) => {
 
     const magicTable = page.locator('magic-table');
     await magicTable.waitFor({ state: 'attached' });
-    expect(magicTable).toHaveClass(/mt-activated/);
-    expect(page.locator('thead')).toHaveClass(/mt-sticky-header/);
+    await expect(magicTable).toHaveClass(/mt-activated/);
+    await expect(page.locator('thead')).toHaveClass(/mt-sticky-header/);
 });
 
 test('header stays at page top when scrolling', async ({ page }) => {
