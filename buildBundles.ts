@@ -6,10 +6,8 @@ await build({
     build: {
         lib: {
             entry: './src/index.ts',
-            formats: ['es'],
             fileName: 'index',
         },
-        copyPublicDir: false,
         emptyOutDir: true,
     },
     clearScreen: false,
@@ -21,10 +19,8 @@ for await (const bundle of glob('src/*.ts')) {
             build: {
                 lib: {
                     entry: bundle,
-                    formats: ['es'],
                     fileName: basename(bundle, '.ts'),
                 },
-                copyPublicDir: false,
                 emptyOutDir: false,
             },
             clearScreen: false,

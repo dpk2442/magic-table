@@ -12,4 +12,7 @@ export default {
         },
         copyPublicDir: false,
     },
+    esbuild: {
+        minifyIdentifiers: false,
+    },
 } satisfies UserConfig;
