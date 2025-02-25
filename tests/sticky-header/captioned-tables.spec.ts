@@ -12,7 +12,7 @@ test('unconstrained header returns to correct location when scrolling down and u
     expect((await table.boundingBox())!.y).toBeGreaterThan(0);
     expect((await thead.boundingBox())!.y).toBeGreaterThan(0);
 
-    await page.evaluate(() => window.scrollBy({ top: 100 }));
+    await page.evaluate(() => window.scrollBy({ top: 200 }));
 
     expect((await table.boundingBox())!.y).toBeLessThan(0);
     expect((await thead.boundingBox())!.y).toBe(0);
