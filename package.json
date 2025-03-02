@@ -2,6 +2,10 @@
     "name": "@dpk2442/magic-table",
     "version": "0.1.1",
     "description": "Adds magic to your table",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/dpk2442/magic-table.git"
+    },
     "type": "module",
     "main": "./dist/index.js",
     "module": "./dist/index.js",
