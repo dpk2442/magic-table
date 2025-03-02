@@ -1,6 +1,6 @@
 {
     "name": "@dpk2442/magic-table",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "Adds magic to your table",
     "repository": {
         "type": "git",
@@ -12,6 +12,9 @@
     "exports": {
         ".": "./dist/index.js"
     },
+    "files": [
+        "dist"
+    ],
     "scripts": {
         "dev": "vite",
         "build": "tsc && tsx ./buildBundles.ts",
