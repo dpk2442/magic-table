@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Basic Sortable</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <h1>Basic Sortable</h1>
+    <magic-table sortable>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th id="date" data-mt-sortable="date">Date</th>
+                    <th data-mt-sortable="string">String</th>
+                    <th data-mt-sortable="natural">Alphanumeric</th>
+                    <th data-mt-sortable="number">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>0</td>
+                    <td>2025/01/01</td>
+                    <td>Bravo</td>
+                    <td>Item 20</td>
+                    <td>6</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>2/14/25</td>
+                    <td>Alpha</td>
+                    <td>Item 11</td>
+                    <td>22</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>2025-02-14T11:00</td>
+                    <td>Beta</td>
+                    <td>Item 2</td>
+                    <td>11.7</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Jan 2 2025 15:00</td>
+                    <td>Tango</td>
+                    <td>Name</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>2025/01/02 3:01 PM</td>
+                    <td>Delta</td>
+                    <td>Other Name</td>
+                    <td>100</td>
+                </tr>
+            </tbody>
+        </table>
+    </magic-table>
+    <div class="scroll-padding"></div>
+    <script type="module">
+        import { MagicTable } from '../../src/index.ts';
+
+        window.customElements.define('magic-table', MagicTable);
+    </script>
+</body>
+</html>

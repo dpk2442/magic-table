@@ -1,7 +1,7 @@
 # Magic Table
 
-Magic Table is a custom element that adds interactivity to an HTML table. It can make the header sticky, with more
-features coming soon.
+Magic Table is a custom element that adds interactivity to an HTML table. It can make the header sticky and add the
+ability to sort a table based on columns. Details for each feature can be found in the [Usage](#usage) section below.
 
 ## Installation
 
@@ -83,3 +83,84 @@ receive the class `mt-sticky-header` when sticky headers are enabled.
     </table>
 </magic-table>
 ```
+
+### Sorting
+
+Sorting can be enabled with the `sortable` attribute. The header (`th`) of each sortable column should have a
+`data-mt-sortable` attribute set to the sorting type to be used, and the header will have the `mt-sortable` class added
+to it if sorting is enabled for that column.
+
+```html
+<magic-table sortable>
+    <table>
+        <thead>
+            <tr>
+                <th>Column 1</th>
+                <th data-mt-sortable="string" class="mt-sortable">Column 2</th>
+            </tr>
+        </thead>
+        <tbody>
+            ...
+        </tbody>
+    </table>
+</magic-table>
+```
+
+#### Available Sorting Types
+
+<table>
+    <tr><th>Type</th><th>Details</th></tr>
+    <tr>
+        <td><code>date</code></td>
+        <td>
+            This sort type will treat the values in the column as <code>Date</code> objects, using <code>new
+            Date(columnValue)</code> to construct an instance to be used for sorting.
+        </td>
+    </tr>
+    <tr>
+        <td><code>string</code></td>
+        <td>
+            This sort will perform simple alphabetic sorting on the values in the column.
+        </td>
+    </tr>
+    <tr>
+        <td><code>natural</code></td>
+        <td>
+            This sort will perform "natural" sorting, treating numerical values as numbers.
+        </td>
+    </tr>
+    <tr>
+        <td><code>number</code></td>
+        <td>
+            This sort treats each value as a number, using <code>parseFloat</code> to convert the value.
+        </td>
+    </tr>
+</table>
+
+#### Sorting Classes
+
+When a column is sorted, the class `mt-sorted-asc` or `mt-sorted-desc` will be set on the column that is sorted,
+depending on the order. All other columns will have neither of these classes set.
+
+#### Sorting API
+
+The table can be sorted by calling the API on a reference to the `magic-table` element.
+
+<table>
+    <tr><th>Type</th><th>Details</th></tr>
+    <tr>
+        <td><code>sortByColumn(indexOrId[, order])</code></td>
+        <td>
+            Sorts the table by the given column. The columns are indexed from 0, or can be referred to by using the
+            value set in the `id` attribute. The second parameter controls sort order and can be set to `asc` or `desc`;
+            if ommitted the sort order will be toggled, starting with `asc` if the table is not currently sorted by that
+            column. 
+        </td>
+    </tr>
+    <tr>
+        <td><code>clearSort()</code></td>
+        <td>
+            Clears the sorting of the table and resets it to the page load order.
+        </td>
+    </tr>
+</table>

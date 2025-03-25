@@ -1,6 +1,12 @@
+import SortableTable from './sortable/SortableTable.ts';
+import { SortOrder } from './sortable/SortableTypes.ts';
+
 export default class MagicTable extends HTMLElement {
+    private sortableTable: null | SortableTable;
+
     constructor() {
         super();
+        this.sortableTable = null;
         this.attachShadow({ mode: 'open' }).innerHTML = `
             <style>
                 :host {
@@ -25,6 +31,26 @@ export default class MagicTable extends HTMLElement {
         if (this.hasAttribute('sticky-header')) {
             this.setupStickyHeader(table);
         }
+
+        if (this.hasAttribute('sortable')) {
+            this.setupSortable(table);
+        }
+    }
+
+    sortByColumn(column: number | string, sortOrder: SortOrder = null) {
+        if (!this.sortableTable) {
+            throw new Error('Table is not enabled for sorting');
+        }
+
+        this.sortableTable.sortByColumn(column, sortOrder);
+    }
+
+    clearSort() {
+        if (!this.sortableTable) {
+            throw new Error('Table is not enabled for sorting');
+        }
+
+        this.sortableTable.clearSort();
     }
 
     private setupStickyHeader(table: HTMLTableElement) {
@@ -97,5 +123,9 @@ export default class MagicTable extends HTMLElement {
             },
         );
         intersectionObserver.observe(table);
+    }
+
+    private setupSortable(table: HTMLTableElement) {
+        this.sortableTable = new SortableTable(table);
     }
 }
