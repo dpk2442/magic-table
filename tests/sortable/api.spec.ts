@@ -1,5 +1,5 @@
 import { test, expect, Locator } from '@playwright/test';
-import { MagicTable } from '../../src/index.ts';
+import { MagicTable, MagicTableSortInfo } from '../../src/index.ts';
 import { SortOrder } from '../../src/lib/sortable/SortableTypes.ts';
 
 function getCurrentTableOrder(magicTable: Locator) {
@@ -85,4 +85,78 @@ test('cannot sort by unsortable column', async ({ page }) => {
     await expect(
         magicTable.evaluate((mt: MagicTable) => mt.sortByColumn(0)),
     ).rejects.toThrow('Specified column is not sortable');
+});
+
+test('publishes events when sorting', async ({ page }) => {
+    const expectedSortInfos = [
+        {
+            columnIndex: 1,
+            sortOrder: 'asc',
+        },
+        {
+            columnIndex: 1,
+            sortOrder: 'desc',
+        },
+    ];
+
+    await page.addInitScript(() => {
+        (window as any).mtSorted = [];
+        (window as any).mtSortCleared = [];
+        window.addEventListener('mtsorted', e =>
+            (window as any).mtSorted.push({
+                type: e.type,
+                detail: (e as CustomEvent).detail,
+            }),
+        );
+        window.addEventListener('mtsortcleared', e =>
+            (window as any).mtSortCleared.push({
+                type: e.type,
+            }),
+        );
+    });
+
+    await page.goto('/sortable/basic.html');
+    const magicTable = page.locator('magic-table');
+
+    await magicTable.evaluate((mt: MagicTable) => mt.sortByColumn(1));
+    expect(await getCurrentTableOrder(magicTable)).toEqual(DATE_ORDER_ASC);
+    expect(
+        await magicTable.evaluate((mt: MagicTable) => mt.currentSortInfo),
+    ).toMatchObject(expectedSortInfos[0]);
+
+    await magicTable.evaluate((mt: MagicTable) => mt.sortByColumn(1));
+    expect(await getCurrentTableOrder(magicTable)).toEqual(DATE_ORDER_DESC);
+    expect(
+        await magicTable.evaluate((mt: MagicTable) => mt.currentSortInfo),
+    ).toMatchObject(expectedSortInfos[1]);
+
+    await magicTable.evaluate((mt: MagicTable) => mt.clearSort());
+    expect(await getCurrentTableOrder(magicTable)).toEqual(INITIAL_ORDER);
+    expect(
+        await magicTable.evaluate((mt: MagicTable) => mt.currentSortInfo),
+    ).toBeNull();
+
+    await page.waitForFunction(
+        () =>
+            (window as any).mtSorted.length === 2 &&
+            (window as any).mtSortCleared.length === 1,
+    );
+
+    const { mtSorted, mtSortCleared } = await page.evaluate<{
+        mtSorted: Array<{ type: string; detail: MagicTableSortInfo }>;
+        mtSortCleared: Array<{ type: string }>;
+    }>(() => ({
+        mtSorted: (window as any).mtSorted,
+        mtSortCleared: (window as any).mtSortCleared,
+    }));
+
+    expect(mtSorted).toMatchObject(
+        expectedSortInfos.map(info => ({ type: 'mtsorted', detail: info })),
+    );
+
+    expect(mtSortCleared).toMatchObject([
+        {
+            type: 'mtsortcleared',
+        },
+    ]);
 });

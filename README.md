@@ -163,4 +163,23 @@ The table can be sorted by calling the API on a reference to the `magic-table` e
             Clears the sorting of the table and resets it to the page load order.
         </td>
     </tr>
+    <tr>
+        <td><code>currentSortInfo</code></td>
+        <td>
+            This property returns null if the table is in the default sorting order, or the current sorting info (see
+            events section below) if the table is currently sorted.
+        </td>
+    </tr>
 </table>
+
+#### Sorting Events
+
+When the table is sorted, a `CustomEvent` of type `mtsorted` will be published on the `magic-table`. When the sort is cleared, a `CustomEvent` of type `mtsortcleared` is published. The `detail` field of the `mtsorted` event has the following schema, which is also what is returned from the `currentSortInfo` property mentioned above.
+
+```typescript
+interface MagicTableSortInfo {
+    columnIndex: number;
+    header: HTMLTableCellElement;
+    sortOrder: SortOrder;
+}
+```

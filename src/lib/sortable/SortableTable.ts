@@ -1,6 +1,7 @@
 import Column from './Column.ts';
 import Row from './Row.ts';
 import { SortOrder, SortType } from './SortableTypes.ts';
+import type { MagicTableSortInfo } from '../MagicTable.ts';
 
 const SORT_TYPE_MAPPING: { [_: string]: SortType } = {
     date: 'date',
@@ -17,6 +18,8 @@ export default class SortableTable {
     private tbody;
 
     private rows;
+
+    private sortInfo: MagicTableSortInfo | null;
 
     constructor(table: HTMLTableElement) {
         const columnHeaders =
@@ -40,9 +43,18 @@ export default class SortableTable {
             this.tbody.querySelectorAll<HTMLTableRowElement>('tr'),
             (row, i) => new Row(this.columns, row, i),
         );
+
+        this.sortInfo = null;
     }
 
-    sortByColumn(column: number | string, sortOrder: SortOrder) {
+    get currentSortInfo() {
+        return this.sortInfo;
+    }
+
+    sortByColumn(
+        column: number | string,
+        sortOrder: SortOrder,
+    ): MagicTableSortInfo {
         let columnId: number;
         if (typeof column === 'string') {
             const i = this.columnIdMap.get(column);
@@ -91,6 +103,14 @@ export default class SortableTable {
         }
 
         this.tbody.append(...this.rows.map(row => row.element));
+
+        this.sortInfo = {
+            columnIndex: columnId,
+            header: columnToSort.headerElement,
+            sortOrder: columnToSort.sortOrder,
+        };
+
+        return this.sortInfo;
     }
 
     clearSort() {
@@ -100,5 +120,7 @@ export default class SortableTable {
 
         this.rows.sort((a, b) => a.originalIndex - b.originalIndex);
         this.tbody.append(...this.rows.map(row => row.element));
+
+        this.sortInfo = null;
     }
 }

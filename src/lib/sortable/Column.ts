@@ -63,6 +63,10 @@ export default class Column<T extends Date | number | string> {
         this.header.classList.toggle(SORTED_DESC_CLASS, sortOrder === 'desc');
     }
 
+    get headerElement() {
+        return this.header;
+    }
+
     static create(header: HTMLTableCellElement, sortType: SortType) {
         switch (sortType) {
             case 'date':
