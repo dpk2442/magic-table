@@ -174,7 +174,9 @@ The table can be sorted by calling the API on a reference to the `magic-table` e
 
 #### Sorting Events
 
-When the table is sorted, a `CustomEvent` of type `mtsorted` will be published on the `magic-table`. When the sort is cleared, a `CustomEvent` of type `mtsortcleared` is published. The `detail` field of the `mtsorted` event has the following schema, which is also what is returned from the `currentSortInfo` property mentioned above.
+When the table is sorted, a `CustomEvent` of type `mtsorted` will be published on the `magic-table`. When the sort is
+cleared, a `CustomEvent` of type `mtsortcleared` is published. The `detail` field of the `mtsorted` event has the
+following schema, which is also what is returned from the `currentSortInfo` property mentioned above.
 
 ```typescript
 interface MagicTableSortInfo {
@@ -182,4 +184,28 @@ interface MagicTableSortInfo {
     header: HTMLTableCellElement;
     sortOrder: SortOrder;
 }
+```
+
+#### Sorting Buttons
+
+Any `button` element placed inside a sortable column header's `th` element can be given the `data-mt-sort` attribute to
+automatically have an event handler attached to trigger a sort of that column. The attribute can have no value, in which
+case the button will toggle the sort, or it can be set to `asc` or `desc` to force the sort in that order.
+
+```html
+<magic-table sortable>
+    <table>
+        <thead>
+            <tr>
+                <th>Column 1</th>
+                <th data-mt-sortable="string" class="mt-sortable">
+                    <button data-mt-sort>Column 2</button>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            ...
+        </tbody>
+    </table>
+</magic-table>
 ```

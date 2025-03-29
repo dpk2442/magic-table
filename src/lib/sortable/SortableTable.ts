@@ -15,6 +15,12 @@ export default class SortableTable {
 
     private columnIdMap;
 
+    private columnSortButtons: Array<{
+        button: HTMLButtonElement;
+        sortOrder: SortOrder;
+        columnIndex: number;
+    }> = [];
+
     private tbody;
 
     private rows;
@@ -30,6 +36,26 @@ export default class SortableTable {
             let sortType: SortType = null;
             if (columnHeader.dataset.mtSortable) {
                 sortType = SORT_TYPE_MAPPING[columnHeader.dataset.mtSortable];
+                columnHeader
+                    .querySelectorAll<HTMLButtonElement>('button[data-mt-sort]')
+                    .forEach(button => {
+                        let sortOrder: SortOrder = null;
+                        switch (button.dataset.mtSort) {
+                            case 'asc':
+                                sortOrder = 'asc';
+                                break;
+                            case 'desc':
+                                sortOrder = 'desc';
+                                break;
+                            default:
+                        }
+
+                        this.columnSortButtons.push({
+                            button,
+                            sortOrder,
+                            columnIndex: i,
+                        });
+                    });
             }
 
             this.columns[i] = Column.create(columnHeader, sortType);
@@ -45,6 +71,10 @@ export default class SortableTable {
         );
 
         this.sortInfo = null;
+    }
+
+    get sortButtons() {
+        return this.columnSortButtons;
     }
 
     get currentSortInfo() {

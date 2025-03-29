@@ -152,5 +152,12 @@ export default class MagicTable extends HTMLElement {
 
     private setupSortable(table: HTMLTableElement) {
         this.sortableTable = new SortableTable(table);
+        this.sortableTable.sortButtons.forEach(
+            ({ button, columnIndex, sortOrder }) => {
+                button.addEventListener('click', () => {
+                    this.sortByColumn(columnIndex, sortOrder);
+                });
+            },
+        );
     }
 }

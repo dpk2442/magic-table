@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sortable with Buttons</title>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .mt-sortable::after {
+            padding-left: 0.2em;
+            content: "↕️";
+        }
+
+        .mt-sortable.mt-sorted-asc::after {
+            content: "⬆️";
+        }
+
+        .mt-sortable.mt-sorted-desc::after {
+            content: "⬇️";
+        }
+
+        table td:nth-child(2) {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sortable with Buttons</h1>
+
+    <p>
+        <button id="clear-sort">Clear Sort</button>
+    </p>
+
+    <magic-table sortable>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th data-mt-sortable="number">
+                        Value
+                        <button id="toggle" data-mt-sort>Sort Toggle</button>
+                        <button id="asc" data-mt-sort="asc">Sort Asc</button>
+                        <button id="desc" data-mt-sort="desc">Sort Desc</button>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>0</td>
+                    <td>6</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>22</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>11.7</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>100</td>
+                </tr>
+            </tbody>
+        </table>
+    </magic-table>
+    <script type="module">
+        import { MagicTable } from '../../src/index.ts';
+
+        window.customElements.define('magic-table', MagicTable);
+
+        const magicTable = document.querySelector('magic-table');
+        document.querySelector('#clear-sort').addEventListener('click', () => {
+            magicTable.clearSort();
+        });
+    </script>
+</body>
+</html>
