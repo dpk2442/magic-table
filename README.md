@@ -1,7 +1,10 @@
 # Magic Table
 
-Magic Table is a custom element that adds interactivity to an HTML table. It can make the header sticky and add the
-ability to sort a table based on columns. Details for each feature can be found in the [Usage](#usage) section below.
+Magic Table is a custom element that adds interactivity to an HTML table. The goal of the element is to enhance the
+functionality of the table progressively, making as few changes to the DOM and styles as possible.
+
+Magic Table supports sticky headers and sorting based on column values. Details for each feature can be found in the
+[Usage](#usage) section below.
 
 ## Installation
 
