@@ -11,7 +11,7 @@ test('header stays at page top when scrolling', async ({ page }) => {
     await page.evaluate(() => window.scrollBy({ top: 100 }));
 
     expect((await table.boundingBox())!.y).toBeLessThan(0);
-    expect((await thead.boundingBox())!.y).toBe(0);
+    expect((await thead.boundingBox())!.y).toBeCloseTo(0, 5);
 });
 
 test('header stays at container top when scrolling', async ({ page }) => {

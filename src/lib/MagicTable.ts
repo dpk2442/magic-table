@@ -89,7 +89,7 @@ export default class MagicTable extends HTMLElement {
         // Add class to table header and make it sticky
         thead.classList.add('mt-sticky-header');
         thead.style.position = 'sticky';
-        thead.style.top = '0';
+        thead.style.translate = '0 0';
 
         // Compute initial thead offset
         const initialTheadTop = thead.getBoundingClientRect().top;
@@ -98,35 +98,33 @@ export default class MagicTable extends HTMLElement {
 
         // Set up scroll handler based sticky header
         const scrollHandler = () => {
-            window.requestAnimationFrame(() => {
-                const theadRect = thead.getBoundingClientRect();
+            const theadRect = thead.getBoundingClientRect();
 
-                // If thead is at the top of the viewport, no need to adjust
-                if (theadRect.top === 0) {
-                    return;
-                }
+            // If thead is at the top of the viewport, no need to adjust
+            if (theadRect.top === 0) {
+                return;
+            }
 
-                const magicTableRect = this.getBoundingClientRect();
+            const magicTableRect = this.getBoundingClientRect();
 
-                // If the bottom of the magic table is close enough that the thead is only partially visible, no need to adjust
-                if (magicTableRect.bottom <= theadRect.height) {
-                    return;
-                }
+            // If the bottom of the magic table is close enough that the thead is only partially visible, no need to adjust
+            if (magicTableRect.bottom <= theadRect.height) {
+                return;
+            }
 
-                // If the top of the magic table is visible, setting top to 0 will position the thead correctly
-                if (magicTableRect.top + initialOffset >= 0) {
-                    thead.style.top = '0';
-                    return;
-                }
+            // If the top of the magic table is visible, setting top to 0 will position the thead correctly
+            if (magicTableRect.top + initialOffset >= 0) {
+                thead.style.translate = '0 0';
+                return;
+            }
 
-                // The top of the magic table is off the top of the screen, adjust the thead offset accordingly
-                const offset = -magicTableRect.top;
-                if (offset + theadRect.height > magicTableRect.height) {
-                    thead.style.top = `${magicTableRect.height - theadRect.height}px`;
-                } else {
-                    thead.style.top = `${offset}px`;
-                }
-            });
+            // The top of the magic table is off the top of the screen, adjust the thead offset accordingly
+            const offset = -magicTableRect.top - initialOffset;
+            if (offset + theadRect.height > magicTableRect.height) {
+                thead.style.translate = `0 ${magicTableRect.height - theadRect.height}px`;
+            } else {
+                thead.style.translate = `0 ${offset}px`;
+            }
         };
 
         const intersectionObserver = new IntersectionObserver(
