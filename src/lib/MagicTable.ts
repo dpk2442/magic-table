@@ -128,6 +128,8 @@ export default class MagicTable extends HTMLElement {
             }
         };
 
+        scrollHandler();
+
         const intersectionObserver = new IntersectionObserver(
             entries => {
                 entries.forEach(entry => {
