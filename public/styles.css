@@ -24,11 +24,6 @@ table td:first-child {
   border-left: 1px solid black;
 }
 
-table thead {
-    position: sticky;
-    top: 0;
-}
-
 .scroll-padding {
     height: 100vh;
 }

@@ -89,6 +89,7 @@ export default class MagicTable extends HTMLElement {
         // Add class to table header and make it sticky
         thead.classList.add('mt-sticky-header');
         thead.style.position = 'sticky';
+        thead.style.top = '0';
         thead.style.translate = '0 0';
 
         // Compute initial thead offset
