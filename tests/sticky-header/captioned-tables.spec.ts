@@ -32,7 +32,10 @@ test('constrained header returns to correct location when scrolling down and up'
     const thead = table.locator('thead');
 
     const magicTableTop = (await magicTable.boundingBox())!.y;
-    await page.evaluate(([top]) => window.scrollTo({ top }), [magicTableTop]);
+    await page.evaluate(
+        ([top]) => window.scrollTo({ top }),
+        [magicTableTop - 1],
+    );
 
     const initialTheadLocation = (await thead.boundingBox())!.y;
 
