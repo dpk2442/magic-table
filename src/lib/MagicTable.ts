@@ -54,14 +54,15 @@ export default class MagicTable extends HTMLElement {
             throw new Error('Table is not enabled for sorting');
         }
 
-        const detail = this.sortableTable.sortByColumn(column, sortOrder);
-        this.dispatchEvent(
-            new CustomEvent<MagicTableSortInfo>('mtsorted', {
-                bubbles: true,
-                cancelable: true,
-                detail,
-            }),
-        );
+        if (this.sortableTable.sortByColumn(column, sortOrder)) {
+            this.dispatchEvent(
+                new CustomEvent<MagicTableSortInfo>('mtsorted', {
+                    bubbles: true,
+                    cancelable: true,
+                    detail: this.sortableTable.currentSortInfo,
+                }),
+            );
+        }
     }
 
     clearSort() {

@@ -134,7 +134,7 @@ test('publishes events when sorting', async ({ page }) => {
     expect(await getCurrentTableOrder(magicTable)).toEqual(INITIAL_ORDER);
     expect(
         await magicTable.evaluate((mt: MagicTable) => mt.currentSortInfo),
-    ).toBeNull();
+    ).toBeUndefined();
 
     await page.waitForFunction(
         () =>
@@ -159,4 +159,27 @@ test('publishes events when sorting', async ({ page }) => {
             type: 'mtsortcleared',
         },
     ]);
+});
+
+test('sort with explicit order does not repeat sort', async ({ page }) => {
+    await page.addInitScript(() => {
+        (window as any).mtSortedCount = 0;
+        window.addEventListener(
+            'mtsorted',
+            () => (window as any).mtSortedCount++,
+        );
+    });
+
+    await page.goto('/sortable/basic.html');
+    const magicTable = page.locator('magic-table');
+
+    await magicTable.evaluate((mt: MagicTable) => mt.sortByColumn(1, 'asc'));
+    expect(
+        await page.evaluate<number>(() => (window as any).mtSortedCount),
+    ).toEqual(1);
+
+    await magicTable.evaluate((mt: MagicTable) => mt.sortByColumn(1, 'asc'));
+    expect(
+        await page.evaluate<number>(() => (window as any).mtSortedCount),
+    ).toEqual(1);
 });

@@ -25,7 +25,7 @@ export default class SortableTable {
 
     private rows;
 
-    private sortInfo: MagicTableSortInfo | null;
+    private sortInfo: MagicTableSortInfo | undefined;
 
     constructor(table: HTMLTableElement) {
         const columnHeaders =
@@ -70,7 +70,7 @@ export default class SortableTable {
             (row, i) => new Row(this.columns, row, i),
         );
 
-        this.sortInfo = null;
+        this.sortInfo = undefined;
     }
 
     get sortButtons() {
@@ -81,10 +81,7 @@ export default class SortableTable {
         return this.sortInfo;
     }
 
-    sortByColumn(
-        column: number | string,
-        sortOrder: SortOrder,
-    ): MagicTableSortInfo {
+    sortByColumn(column: number | string, sortOrder: SortOrder): boolean {
         let columnId: number;
         if (typeof column === 'string') {
             const i = this.columnIdMap.get(column);
@@ -110,6 +107,8 @@ export default class SortableTable {
                 if (sortOrder) {
                     if (col.sortOrder !== sortOrder) {
                         col.sortOrder = sortOrder;
+                    } else {
+                        return false;
                     }
                 } else if (col.sortOrder === 'asc') {
                     col.sortOrder = 'desc';
@@ -140,7 +139,7 @@ export default class SortableTable {
             sortOrder: columnToSort.sortOrder,
         };
 
-        return this.sortInfo;
+        return true;
     }
 
     clearSort() {
@@ -151,6 +150,6 @@ export default class SortableTable {
         this.rows.sort((a, b) => a.originalIndex - b.originalIndex);
         this.tbody.append(...this.rows.map(row => row.element));
 
-        this.sortInfo = null;
+        this.sortInfo = undefined;
     }
 }
