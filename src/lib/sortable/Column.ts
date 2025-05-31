@@ -68,7 +68,7 @@ export default class Column<T extends Date | number | string> {
     }
 
     static create(header: HTMLTableCellElement, sortType: SortType) {
-        switch (sortType) {
+        switch (sortType.type) {
             case 'date':
                 return new Column<Date>(
                     header,
@@ -93,6 +93,22 @@ export default class Column<T extends Date | number | string> {
                     (a, b) => getNaturalSoter()(a, b),
                     value => value,
                 );
+            case 'custom': {
+                let sortFunction: (a: any, b: any) => number = () => 0;
+                if (sortType.data?.customFunctionName) {
+                    sortFunction = (window as any)[
+                        sortType.data.customFunctionName
+                    ];
+
+                    if (!sortFunction || typeof sortFunction !== 'function') {
+                        throw new Error(
+                            `Invalid custom function ${sortType.data.customFunctionName}`,
+                        );
+                    }
+                }
+
+                return new Column<string>(header, sortFunction, value => value);
+            }
             default:
                 return new Column<string>(header, null, value => value);
         }

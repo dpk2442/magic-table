@@ -3,12 +3,32 @@ import Row from './Row.ts';
 import { SortOrder, SortType } from './SortableTypes.ts';
 import type { MagicTableSortInfo } from '../MagicTable.ts';
 
-const SORT_TYPE_MAPPING: { [_: string]: SortType } = {
-    date: 'date',
-    string: 'string',
-    natural: 'natural',
-    number: 'number',
-};
+function parseSortType(unparsedSortType: string): SortType {
+    switch (unparsedSortType) {
+        case 'date':
+            return { type: 'date' };
+        case 'string':
+            return { type: 'string' };
+        case 'natural':
+            return { type: 'natural' };
+        case 'number':
+            return { type: 'number' };
+        default:
+            if (unparsedSortType.startsWith('custom:')) {
+                const customFunctionName = unparsedSortType.substring(7);
+                if (!customFunctionName) {
+                    throw new Error('Custom function name cannot be empty');
+                }
+
+                return {
+                    type: 'custom',
+                    data: { customFunctionName },
+                };
+            }
+
+            return { type: null };
+    }
+}
 
 export default class SortableTable {
     private columns;
@@ -33,9 +53,9 @@ export default class SortableTable {
         this.columns = new Array<Column<any>>(columnHeaders.length);
         this.columnIdMap = new Map<string, number>();
         columnHeaders.forEach((columnHeader, i) => {
-            let sortType: SortType = null;
+            let sortType: SortType = { type: null };
             if (columnHeader.dataset.mtSortable) {
-                sortType = SORT_TYPE_MAPPING[columnHeader.dataset.mtSortable];
+                sortType = parseSortType(columnHeader.dataset.mtSortable);
                 columnHeader
                     .querySelectorAll<HTMLButtonElement>('button[data-mt-sort]')
                     .forEach(button => {
@@ -120,16 +140,15 @@ export default class SortableTable {
             }
         }
 
-        this.rows.sort((a, b) =>
-            columnToSort.sortFunction!(
-                a.getParsedValue(columnId),
-                b.getParsedValue(columnId),
-            ),
+        const sortCoefficient = columnToSort.sortOrder === 'desc' ? -1 : 1;
+        this.rows.sort(
+            (a, b) =>
+                sortCoefficient *
+                columnToSort.sortFunction!(
+                    a.getParsedValue(columnId),
+                    b.getParsedValue(columnId),
+                ),
         );
-
-        if (columnToSort.sortOrder === 'desc') {
-            this.rows.reverse();
-        }
 
         this.tbody.append(...this.rows.map(row => row.element));
 

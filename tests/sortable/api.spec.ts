@@ -19,6 +19,8 @@ const DATE_ORDER_DESC = ['2', '1', '4', '3', '0'];
     [3, 'desc', ['4', '3', '0', '1', '2']],
     [4, 'asc', ['3', '0', '2', '1', '4']],
     [4, 'desc', ['4', '1', '2', '0', '3']],
+    [5, 'asc', ['2', '4', '0', '1', '3']],
+    [5, 'desc', ['3', '0', '1', '4', '2']],
 ].forEach(([columnId, sortOrder, expectedOrder]) => {
     test(`sorting api sorts as expected: column ${columnId} ${sortOrder}`, async ({
         page,

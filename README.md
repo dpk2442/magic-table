@@ -138,6 +138,15 @@ to it if sorting is enabled for that column.
             This sort treats each value as a number, using <code>parseFloat</code> to convert the value.
         </td>
     </tr>
+    <tr>
+        <td><code>custom</code></td>
+        <td>
+            This sort allows using a custom function to sort the data in the column. The function name should be
+            specified as <code>custom:functionName</code>, and the columns values will be passed as strings. The
+            function should follow the definition of the <code>compareFn</code> that can be passed to <a
+            href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#comparefn">Array.prototype.sort()</a>.
+        </td>
+    </tr>
 </table>
 
 #### Sorting Classes
