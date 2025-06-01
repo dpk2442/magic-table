@@ -32,6 +32,10 @@ export default class MagicTable extends HTMLElement {
             throw new Error('MagicTable does not contain a table!');
         }
 
+        if (this.classList.contains('mt-activated')) {
+            return;
+        }
+
         // This class lets the consumer know the element is activated and has a scoped name, so ignore the linting rule
         // eslint-disable-next-line wc/no-self-class
         this.classList.add('mt-activated');
