@@ -87,6 +87,19 @@ receive the class `mt-sticky-header` when sticky headers are enabled.
 </magic-table>
 ```
 
+### Overflow Classes
+
+Overflow classes can be enabled with the `overflow-classes` attribute. When enabled the `magic-table` will receive the
+following classes if the table is overflowing:
+
+- `mt-overflow-top`: More table can be seen by scrolling up.
+- `mt-overflow-bottom`: More table can be seen by scrolling down.
+- `mt-overflow-left`: More table can be seen by scrolling left.
+- `mt-overflow-right`: More table can be seen by scrolling right.
+
+> [!IMPORTANT]
+> These classes are only recalculated on scroll events, so toggling the overflow state can have unintended side effects.
+
 ### Sorting
 
 Sorting can be enabled with the `sortable` attribute. The header (`th`) of each sortable column should have a

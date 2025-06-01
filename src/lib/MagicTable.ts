@@ -40,6 +40,10 @@ export default class MagicTable extends HTMLElement {
             this.setupStickyHeader(table);
         }
 
+        if (this.hasAttribute('overflow-classes')) {
+            this.setupOverflowClasses();
+        }
+
         if (this.hasAttribute('sortable')) {
             this.setupSortable(table);
         }
@@ -150,6 +154,42 @@ export default class MagicTable extends HTMLElement {
             },
         );
         intersectionObserver.observe(table);
+    }
+
+    private setupOverflowClasses() {
+        const computeOverflowClasses = () => {
+            const hasVerticalOverflow = this.offsetHeight < this.scrollHeight;
+            const isAtTop = hasVerticalOverflow && this.scrollTop === 0;
+            const isAtBottom =
+                this.scrollTop >= this.scrollHeight - this.clientHeight;
+            const hasHorizontalOverflow = this.offsetWidth < this.scrollWidth;
+            const isAtLeft = hasHorizontalOverflow && this.scrollLeft === 0;
+            const isAtRight =
+                this.scrollLeft >= this.scrollWidth - this.clientWidth;
+
+            // These classes let the consumer know there is overflow
+            /* eslint-disable wc/no-self-class */
+            this.classList.toggle(
+                'mt-overflow-top',
+                hasVerticalOverflow && !isAtTop,
+            );
+            this.classList.toggle(
+                'mt-overflow-bottom',
+                hasVerticalOverflow && !isAtBottom,
+            );
+            this.classList.toggle(
+                'mt-overflow-left',
+                hasHorizontalOverflow && !isAtLeft,
+            );
+            this.classList.toggle(
+                'mt-overflow-right',
+                hasHorizontalOverflow && !isAtRight,
+            );
+            /* eslint-enable wc/no-self-class */
+        };
+
+        this.addEventListener('scroll', computeOverflowClasses);
+        computeOverflowClasses();
     }
 
     private setupSortable(table: HTMLTableElement) {

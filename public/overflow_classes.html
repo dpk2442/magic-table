@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fully Constrained Table</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .overflow-parent {
+            position: relative;
+            display: inline-block;
+
+            .left,
+            .right {
+                display: none;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                width: 20px;
+                content: '';
+                z-index: 1;
+            }
+
+            .top,
+            .bottom {
+                display: none;
+                position: absolute;
+                left: 0;
+                right: 0;
+                height: 20px;
+                content: '';
+                z-index: 1;
+            }
+
+            .left:has(~ .mt-overflow-left) {
+                display: initial;
+                left: 0;
+                background: linear-gradient(90deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
+            }
+
+            .right:has(~ .mt-overflow-right) {
+                display: initial;
+                right: 0;
+                background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
+            }
+
+            .top:has(~ .mt-overflow-top) {
+                display: initial;
+                top: 0;
+                background: linear-gradient(rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
+            }
+
+            .bottom:has(~ .mt-overflow-bottom) {
+                display: initial;
+                bottom: 0;
+                background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
+            }
+        }
+
+        magic-table {
+            position: relative;
+            max-width: 500px;
+            max-height: 500px;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Overflow Classes</h1>
+
+    <h2>Fully Constrained</h2>
+    <div class="overflow-parent">
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <magic-table id="full" overflow-classes>
+            <table data-generate-table="100,100"></table>
+        </magic-table>
+    </div>
+
+    <h2>Horizontally Contrained</h2>
+    <div class="overflow-parent">
+        <div class="left"></div>
+        <div class="right"></div>
+        <magic-table id="horizontal" overflow-classes>
+            <table data-generate-table="2,100"></table>
+        </magic-table>
+    </div>
+
+    <h2>Vertically Constrained</h2>
+    <div class="overflow-parent">
+        <div class="top"></div>
+        <div class="bottom"></div>
+        <magic-table id="vertical" overflow-classes>
+            <table data-generate-table="100,2"></table>
+        </magic-table>
+    </div>
+
+    <script type="module">
+        import './table_generator.js';
+        import '../src/magic-table.ts';
+    </script>
+</body>
+</html>
